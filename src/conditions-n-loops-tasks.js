@@ -366,8 +366,86 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  let matrix = [];
+  let borderTop = 1;
+  let borderBottom = size;
+  let borderLeft = 1;
+  let borderRight = size;
+  let x = 1;
+  let y = 1;
+  const direction = {
+    right: 'right',
+    left: 'left',
+    down: 'down',
+    up: 'up',
+  };
+  let currentDirection = direction.right;
+
+  const coordinates = {};
+
+  for (let num = 1; num <= size * size; num += 1) {
+    if (!coordinates[y]) {
+      coordinates[y] = {};
+    }
+    coordinates[y][x] = num;
+
+    switch (currentDirection) {
+      case direction.right:
+        if (x < borderRight) {
+          x += 1;
+        } else {
+          y += 1;
+          currentDirection = direction.down;
+          borderTop += 1;
+        }
+        break;
+
+      case direction.down:
+        if (y < borderBottom) {
+          y += 1;
+        } else {
+          x -= 1;
+          currentDirection = direction.left;
+          borderRight -= 1;
+        }
+        break;
+
+      case direction.left:
+        if (x > borderLeft) {
+          x -= 1;
+        } else {
+          y -= 1;
+          currentDirection = direction.up;
+          borderBottom -= 1;
+        }
+        break;
+
+      case direction.up:
+        if (y > borderTop) {
+          y -= 1;
+        } else {
+          x += 1;
+          currentDirection = direction.right;
+          borderLeft += 1;
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  for (let coordY = 1; coordY <= size; coordY += 1) {
+    let row = [];
+
+    for (let coordX = 1; coordX <= size; coordX += 1) {
+      row = [...row, coordinates[coordY][coordX]];
+    }
+
+    matrix = [...matrix, row];
+  }
+
+  return matrix;
 }
 
 /**
